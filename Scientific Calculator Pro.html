@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scientific Calculator</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            transition: background 0.5s;
+            overflow: hidden;
+        }
+        .container {
+            text-align: center;
+            position: relative;
+        }
+        .calculator {
+            background: #222;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            max-width: 400px;
+            border: 5px solid;
+            border-image: linear-gradient(45deg, red, yellow, green, cyan, blue, violet) 1;
+            animation: borderColor 5s infinite linear;
+        }
+        @keyframes borderColor {
+            0% { border-image-source: linear-gradient(45deg, red, yellow, green, cyan, blue, violet); }
+            100% { border-image-source: linear-gradient(45deg, violet, blue, cyan, green, yellow, red); }
+        }
+        .display {
+            background: #333;
+            color: white;
+            font-size: 2em;
+            padding: 10px;
+            border-radius: 5px;
+            text-align: right;
+            margin-bottom: 10px;
+            overflow-x: auto;
+        }
+        .buttons {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 10px;
+        }
+        .btn {
+            background: #444;
+            color: white;
+            border: none;
+            padding: 15px;
+            font-size: 1.2em;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s, background 0.3s;
+        }
+        .btn:hover {
+            background: #ffcc00;
+            transform: scale(1.1);
+            box-shadow: 0 4px 10px rgba(255, 255, 255, 0.2);
+        }
+        .marquee {
+            position: absolute;
+            top: 10px;
+            width: 100%;
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #ffcc00;
+            white-space: nowrap;
+            overflow: hidden;
+        }
+        .marquee span {
+            display: inline-block;
+            padding-left: 100%;
+            animation: marquee 10s linear infinite;
+        }
+        @keyframes marquee {
+            from { transform: translateX(100%); }
+            to { transform: translateX(-100%); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="marquee"><span>Calculate Your Mathematical Calculations with Ease!</span></div>
+        <div class="calculator">
+            <div class="display" id="display">0</div>
+            <div class="buttons">
+                <button class="btn" onclick="appendValue('(')">(</button>
+                <button class="btn" onclick="appendValue(')')">)</button>
+                <button class="btn clear" onclick="clearDisplay()">C</button>
+                <button class="btn operator" onclick="appendValue('/')">÷</button>
+                <button class="btn" onclick="appendValue('7')">7</button>
+                <button class="btn" onclick="appendValue('8')">8</button>
+                <button class="btn" onclick="appendValue('9')">9</button>
+                <button class="btn operator" onclick="appendValue('*')">×</button>
+                <button class="btn" onclick="appendValue('4')">4</button>
+                <button class="btn" onclick="appendValue('5')">5</button>
+                <button class="btn" onclick="appendValue('6')">6</button>
+                <button class="btn operator" onclick="appendValue('-')">-</button>
+                <button class="btn" onclick="appendValue('1')">1</button>
+                <button class="btn" onclick="appendValue('2')">2</button>
+                <button class="btn" onclick="appendValue('3')">3</button>
+                <button class="btn operator" onclick="appendValue('+')">+</button>
+                <button class="btn" onclick="appendValue('0')">0</button>
+                <button class="btn" onclick="appendValue('.')">.</button>
+                <button class="btn equals" onclick="calculateResult()">=</button>
+                <button class="btn" onclick="appendValue('sin(')">sin</button>
+                <button class="btn" onclick="appendValue('cos(')">cos</button>
+                <button class="btn" onclick="appendValue('tan(')">tan</button>
+                <button class="btn" onclick="appendValue('log(')">log</button>
+                <button class="btn" onclick="appendValue('ln(')">ln</button>
+                <button class="btn" onclick="appendValue('sqrt(')">√</button>
+                <button class="btn" onclick="appendValue('^')">x^y</button>
+                <button class="btn" onclick="appendValue('!')">x!</button>
+                <button class="btn" onclick="appendValue('pi')">π</button>
+                <button class="btn" onclick="appendValue('e')">e</button>
+            </div>
+        </div>
+        <script>
+            function appendValue(value) {
+                let display = document.getElementById("display");
+                display.innerText = display.innerText === "0" ? value : display.innerText + value;
+            }
+            function clearDisplay() {
+                document.getElementById("display").innerText = "0";
+            }
+            function calculateResult() {
+                let display = document.getElementById("display");
+                let expression = display.innerText.replace(/pi/g, "Math.PI").replace(/e/g, "Math.E");
+                expression = expression.replace(/sqrt\(/g, "Math.sqrt(")
+                                           .replace(/sin\(/g, "Math.sin(")
+                                           .replace(/cos\(/g, "Math.cos(")
+                                           .replace(/tan\(/g, "Math.tan(")
+                                           .replace(/log\(/g, "Math.log10(")
+                                           .replace(/ln\(/g, "Math.log(")
+                                           .replace(/\^/g, "**");
+                try {
+                    display.innerText = eval(expression);
+                } catch {
+                    display.innerText = "Error";
+                }
+            }
+        </script>
+    </div>
+</body>
+</html>
