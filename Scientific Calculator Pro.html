@@ -113,13 +113,13 @@
                 <button class="btn" onclick="appendValue('sin(')">sin</button>
                 <button class="btn" onclick="appendValue('cos(')">cos</button>
                 <button class="btn" onclick="appendValue('tan(')">tan</button>
-                <button class="btn" onclick="appendValue('log(')">log</button>
+                <button class="btn" onclick="appendValue('log10(')">log</button>
                 <button class="btn" onclick="appendValue('ln(')">ln</button>
                 <button class="btn" onclick="appendValue('sqrt(')">√</button>
-                <button class="btn" onclick="appendValue('^')">x^y</button>
+                <button class="btn" onclick="appendValue('**')">x^y</button>
                 <button class="btn" onclick="appendValue('!')">x!</button>
-                <button class="btn" onclick="appendValue('pi')">π</button>
-                <button class="btn" onclick="appendValue('e')">e</button>
+                <button class="btn" onclick="appendValue('Math.PI')">π</button>
+                <button class="btn" onclick="appendValue('Math.E')">e</button>
             </div>
         </div>
         <script>
@@ -130,16 +130,12 @@
             function clearDisplay() {
                 document.getElementById("display").innerText = "0";
             }
+            function factorial(n) {
+                return n === 0 ? 1 : n * factorial(n - 1);
+            }
             function calculateResult() {
                 let display = document.getElementById("display");
-                let expression = display.innerText.replace(/pi/g, "Math.PI").replace(/e/g, "Math.E");
-                expression = expression.replace(/sqrt\(/g, "Math.sqrt(")
-                                           .replace(/sin\(/g, "Math.sin(")
-                                           .replace(/cos\(/g, "Math.cos(")
-                                           .replace(/tan\(/g, "Math.tan(")
-                                           .replace(/log\(/g, "Math.log10(")
-                                           .replace(/ln\(/g, "Math.log(")
-                                           .replace(/\^/g, "**");
+                let expression = display.innerText.replace(/\^/g, "**").replace(/(\d+)!/g, (match, num) => factorial(parseInt(num)));
                 try {
                     display.innerText = eval(expression);
                 } catch {
@@ -150,3 +146,4 @@
     </div>
 </body>
 </html>
+
